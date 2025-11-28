@@ -27,12 +27,7 @@
 3. 技术实现细节 (Technical Highlights)
 服务端：基于 eBPF 的全子网监听
 为了在 Linux 上高效监听亿亿个 IPv6 地址而不消耗系统资源，我们采用 TPROXY 配合 IP_TRANSPARENT：
-# 示例：将目标为 2001:db8:xxxx::/64 的所有流量透明代理到本地端口
-ip -6 rule add fwmark 1 lookup 100
-ip -6 route add local 2001:db8:xxxx::/64 dev lo table 100
-ip6tables -t mangle -N DIVERT
-ip6tables -t mangle -A PREROUTING -p tcp -m socket -j DIVERT
-ip6tables -t mangle -A PREROUTING -p tcp -d 2001:db8:xxxx::/64 -j TPROXY --tproxy-mark 0x1/0x1 --on-port 443
+<script src="https://gist.github.com/green3031/b84177dbefae994494d81b3cceecb16d.js"></script>
 
 协议层：IPv6 Flow Label 隐蔽信道
 利用 IPv6 头部特有的 20-bit Flow Label 字段传输握手验证信息或会话 ID，减少握手 RTT（往返时延），同时作为一种难以被中间设备剥离的隐写术。
